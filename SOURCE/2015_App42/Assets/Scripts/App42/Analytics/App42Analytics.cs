@@ -4,7 +4,7 @@ using com.shephertz.app42.paas.sdk.csharp;
 using com.shephertz.app42.paas.sdk.csharp.app42Event;
 using AssemblyCSharp;
 
-public sealed class App42Analitics : MonoBehaviour {
+public sealed class App42Analytics : MonoBehaviour {
 
 //	[SerializeField]
 //	private bool isDebug;
@@ -15,12 +15,12 @@ public sealed class App42Analitics : MonoBehaviour {
 	public static void Initialize(string p_loggedUser){
 
 		App42API.Initialize(App42Manager.Instance.API_KEY, App42Manager.Instance.SECRET_KEY);  
-		App42API.EnableEventService(true);  
+		App42API.EnableEventService(true);  //FIXME
 		App42API.SetLoggedInUser(p_loggedUser) ; 
 		eventService = App42API.BuildEventService(); 
 
 //		if (isDebug)
-			App42Log.SetDebug(true);        //Prints output in your editor console  
+//			App42Log.SetDebug(true);        //Prints output in your editor console  
 	}
 
 	#region Track Event
@@ -37,7 +37,7 @@ public sealed class App42Analitics : MonoBehaviour {
 	/// properties.Add ("Revenue", 5000);  
 	/// eventService.TrackEvent(eventName, properties, new UnityCallBack());   
 	/// </example>
-	public static void TrackEvent(string p_eventname, Dictionary<string,object> p_properties, UserResponse p_callBack){
+	public static void TrackEvent(string p_eventname, Dictionary<string,object> p_properties, App42CallBack p_callBack){
 		eventService.TrackEvent(p_eventname, p_properties, p_callBack);   
 	}
 	#endregion
