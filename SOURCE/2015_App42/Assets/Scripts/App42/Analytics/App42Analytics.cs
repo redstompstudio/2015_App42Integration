@@ -12,11 +12,24 @@ public sealed class App42Analytics : MonoBehaviour {
 
 	private static EventService eventService;
 
-	public static void Initialize(string p_loggedUser){
+	/// <summary>
+	/// Inicializa o analytics.
+	/// </summary>
+	public static void Initialize(){
+		Initialize(null);
+	}
+
+	/// <summary>
+	/// Inicializa o analytics com um usuario.
+	/// </summary>
+	/// <param name="p_loggedUser">P_logged user.</param>
+	public static void Initialize(string p_loggedUser = null){
 
 		App42API.Initialize(App42Manager.Instance.API_KEY, App42Manager.Instance.SECRET_KEY);  
 		App42API.EnableEventService(true);  //FIXME
-		App42API.SetLoggedInUser(p_loggedUser) ; 
+		if (!string.IsNullOrEmpty( p_loggedUser))
+			App42API.SetLoggedInUser(p_loggedUser) ; 
+
 		eventService = App42API.BuildEventService(); 
 
 //		if (isDebug)
@@ -37,8 +50,9 @@ public sealed class App42Analytics : MonoBehaviour {
 	/// properties.Add ("Revenue", 5000);  
 	/// eventService.TrackEvent(eventName, properties, new UnityCallBack());   
 	/// </example>
-	public static void TrackEvent(string p_eventname, Dictionary<string,object> p_properties, App42CallBack p_callBack){
-		eventService.TrackEvent(p_eventname, p_properties, p_callBack);   
+	public static void TrackEvent(string p_eventname, Dictionary<string,object> p_properties, App42Response.OnSuccessDelegate pSuccess, App42Response.OnExceptionDelegate pException){
+		App42Response response = new App42Response(pSuccess, pException);
+		eventService.TrackEvent(p_eventname, p_properties, response);   
 	}
 	#endregion
 
@@ -68,8 +82,9 @@ public sealed class App42Analytics : MonoBehaviour {
 	/// properties.Add ("IsCompletedSecretMission", false);  
 	/// eventService.StartActivity(activityName, properties, new UnityCallBack());  
 	/// </example>
-	public static void StartTrackingUserActivity(string p_activityName, Dictionary<string,object> p_properties, UserResponse p_callBack){
-		eventService.StartActivity(p_activityName, p_properties, p_callBack); 
+	public static void StartTrackingUserActivity(string p_activityName, Dictionary<string,object> p_properties, App42Response.OnSuccessDelegate pSuccess, App42Response.OnExceptionDelegate pException){
+		App42Response response = new App42Response(pSuccess, pException);
+		eventService.StartActivity(p_activityName, p_properties, response); 
 	}
 
 	
@@ -89,8 +104,9 @@ public sealed class App42Analytics : MonoBehaviour {
 	/// properties.Add ("IsCompletedSecretMission", true);  
 	/// eventService.EndActivity(activityName, properties, new UnityCallBack());  
 	/// </example>
-	public static void EndTrackingUserActivity(string p_activityName, Dictionary<string,object> p_properties, UserResponse p_callBack){
-		eventService.EndActivity(p_activityName, p_properties, p_callBack); 
+	public static void EndTrackingUserActivity(string p_activityName, Dictionary<string,object> p_properties, App42Response.OnSuccessDelegate pSuccess, App42Response.OnExceptionDelegate pException){
+		App42Response response = new App42Response(pSuccess, pException);
+		eventService.EndActivity(p_activityName, p_properties, response); 
 	}
 	#endregion
 

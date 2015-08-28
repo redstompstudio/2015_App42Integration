@@ -16,26 +16,26 @@ public class AnalyticsExample : MonoBehaviour
 	void Update ()
 	{
 		if (Input.GetKeyDown (KeyCode.A)) {
-			App42Analytics.TrackEvent ("EVENT_SINGLE", null, new DefaultCallBack ()); 
+			App42Analytics.TrackEvent ("EVENT_SINGLE", null, OnTrackEventSuccess, OnTrackEventException); 
 //			 
 		}
 		if (Input.GetKeyDown (KeyCode.S)) {
 			Dictionary<string,object> properties = new Dictionary<string, object> ();  
 			properties.Add ("gold", 555);  			 
-			App42Analytics.TrackEvent ("EVENTPROPERTY", properties, new DefaultCallBack ()); 
+			App42Analytics.TrackEvent ("EVENTPROPERTY", properties, OnTrackEventSuccess, OnTrackEventException); 
 		}
 	}
+	
 
-	public class DefaultCallBack : App42CallBack
+	void OnTrackEventSuccess(object pResponse)
 	{
-		public void OnSuccess (object response)
-		{
-			Debug.Log ("Success: " + response.ToString());
-		}
 				
-		public void OnException (System.Exception e)
-		{
-			Debug.Log ("CreateUser: Exception : " + e);
-		}
+		Debug.Log (pResponse.ToString());
+
+	}
+	
+	void OnTrackEventException(System.Exception pEx)
+	{
+		Debug.Log ("Something is wrong!");
 	}
 }
